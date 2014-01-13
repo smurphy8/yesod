@@ -62,6 +62,7 @@ import           Web.Cookie                         (SetCookie (..))
 import           Yesod.Core.Types
 import           Yesod.Core.Internal.Session
 import           Yesod.Core.Widget
+
 import Control.Monad.Trans.Class (lift)
 
 -- | Define settings for a Yesod applications. All methods have intelligent
@@ -516,7 +517,7 @@ defaultErrorHandler (BadMethod m) = selectRep $ do
             <h1>Method Not Supported
             <p>Method <code>#{S8.unpack m}</code> not supported
         |]
-    provideRep $ return $ object ["message" .= ("Bad method" :: Text), "method" .= m]
+    provideRep $ return $ object ["message" .= ("Bad method" :: Text), "method" .= (TE.decodeUtf8 m)]
 
 asyncHelper :: (url -> [x] -> Text)
          -> [Script (url)]
